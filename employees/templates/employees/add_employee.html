@@ -4,10 +4,12 @@
 
 <h2>Add Employee</h2>
 
-<form method="POST">
+<form method="POST" class="card p-4 shadow">
     {% csrf_token %}
     {{ form.as_p }}
-    <button type="submit">Save</button>
+    <button type="submit" class="btn btn-success">
+        Save Employee
+    </button>
 </form>
 
 {% endblock %}

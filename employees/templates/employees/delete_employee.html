@@ -4,13 +4,19 @@
 
 <h2>Delete Employee</h2>
 
-<p>Are you sure you want to delete {{ employee.name }}?</p>
+<div class="card p-4 shadow">
+    <p>Are you sure you want to delete <strong>{{ employee.name }}</strong>?</p>
 
-<form method="POST">
-    {% csrf_token %}
-    <button type="submit">Yes, Delete</button>
-</form>
+    <form method="POST">
+        {% csrf_token %}
+        <button type="submit" class="btn btn-danger">
+            Yes, Delete
+        </button>
 
-<a href="{% url 'employee_list' %}">Cancel</a>
+        <a href="{% url 'employee_list' %}" class="btn btn-secondary">
+            Cancel
+        </a>
+    </form>
+</div>
 
 {% endblock %}
