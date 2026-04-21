@@ -53,7 +53,7 @@ A comprehensive Django-based web application for managing employee information e
 ##  Tech Stack
 
 - **Backend Framework**: Django 6.0.4
-- **Database**: SQLite3 (default)
+- **Database**: PostgreSQL
 - **Python Version**: 3.x
 - **Frontend**: HTML5, Bootstrap CSS
 - **Web Server**: ASGI/WSGI compatible
