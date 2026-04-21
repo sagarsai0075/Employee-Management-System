@@ -1,22 +1,91 @@
 {% extends 'employees/base.html' %}
 
+{% block title %}Delete Employee - Employee Management System{% endblock %}
+
 {% block content %}
 
-<h2>Delete Employee</h2>
+<div class="row">
+    <div class="col-lg-6 mx-auto">
+        <h2 class="page-title">
+            <i class="bi bi-exclamation-triangle text-danger"></i> Delete Confirmation
+        </h2>
 
-<div class="card p-4 shadow">
-    <p>Are you sure you want to delete <strong>{{ employee.name }}</strong>?</p>
+        <div class="card border-danger">
+            <div class="card-body p-4">
+                <div class="alert alert-danger" role="alert">
+                    <i class="bi bi-exclamation-circle"></i> 
+                    <strong>Warning!</strong> This action cannot be undone.
+                </div>
 
-    <form method="POST">
-        {% csrf_token %}
-        <button type="submit" class="btn btn-danger">
-            Yes, Delete
-        </button>
+                <div class="card bg-light mb-4">
+                    <div class="card-body">
+                        <h5 class="card-title">
+                            <i class="bi bi-person-fill"></i> Employee Information
+                        </h5>
+                        <hr>
+                        <div class="row mb-3">
+                            <div class="col-sm-4">
+                                <strong>Name:</strong>
+                            </div>
+                            <div class="col-sm-8">
+                                <span class="badge bg-primary">{{ employee.name }}</span>
+                            </div>
+                        </div>
+                        <div class="row mb-3">
+                            <div class="col-sm-4">
+                                <strong>Email:</strong>
+                            </div>
+                            <div class="col-sm-8">
+                                {{ employee.email }}
+                            </div>
+                        </div>
+                        <div class="row mb-3">
+                            <div class="col-sm-4">
+                                <strong>Phone:</strong>
+                            </div>
+                            <div class="col-sm-8">
+                                {{ employee.phone }}
+                            </div>
+                        </div>
+                        <div class="row mb-3">
+                            <div class="col-sm-4">
+                                <strong>Department:</strong>
+                            </div>
+                            <div class="col-sm-8">
+                                <span class="badge bg-info">{{ employee.department.name }}</span>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-sm-4">
+                                <strong>Salary:</strong>
+                            </div>
+                            <div class="col-sm-8">
+                                <span class="badge bg-success">{{ employee.salary }}</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
 
-        <a href="{% url 'employee_list' %}" class="btn btn-secondary">
-            Cancel
-        </a>
-    </form>
+                <p class="text-muted mb-4">
+                    <i class="bi bi-info-circle"></i> 
+                    Are you sure you want to delete <strong>{{ employee.name }}</strong>? 
+                    This will permanently remove all associated records.
+                </p>
+
+                <form method="POST">
+                    {% csrf_token %}
+                    <div class="d-flex gap-2">
+                        <button type="submit" class="btn btn-danger btn-lg flex-grow-1">
+                            <i class="bi bi-trash"></i> Yes, Delete Permanently
+                        </button>
+                        <a href="{% url 'employee_list' %}" class="btn btn-secondary btn-lg flex-grow-1">
+                            <i class="bi bi-arrow-left"></i> Cancel
+                        </a>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
 </div>
 
 {% endblock %}

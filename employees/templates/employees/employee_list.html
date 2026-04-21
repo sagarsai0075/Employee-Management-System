@@ -1,60 +1,121 @@
 {% extends 'employees/base.html' %}
 
+{% block title %}Employee List - Employee Management System{% endblock %}
+
 {% block content %}
 
-<a href="{% url 'add_employee' %}" class="btn btn-primary mb-3">
-    Add Employee
-</a>
-
-<h2>Employee List</h2>
-
-<form method="GET" class="mb-3">
-    <div class="row">
-        <div class="col-md-6">
-            <input
-                type="text"
-                name="q"
-                class="form-control"
-                placeholder="Search employee by name"
-            >
-        </div>
-
-        <div class="col-md-2">
-            <button type="submit" class="btn btn-success">
-                Search
-            </button>
-        </div>
+<div class="mb-4">
+    <div class="d-flex justify-content-between align-items-center mb-3">
+        <h2 class="page-title mb-0">
+            <i class="bi bi-people-fill"></i> Employee List
+        </h2>
+        <a href="{% url 'add_employee' %}" class="btn btn-primary btn-lg">
+            <i class="bi bi-plus-circle"></i> Add New Employee
+        </a>
     </div>
-</form>
+</div>
 
-<table class="table table-bordered table-striped">
-    <tr>
-        <th>Name</th>
-        <th>Email</th>
-        <th>Phone</th>
-        <th>Salary</th>
-        <th>Department</th>
-        <th>Actions</th>
-    </tr>
+<!-- Search Section -->
+<div class="card mb-4">
+    <div class="card-body p-3">
+        <form method="GET" class="row g-2">
+            <div class="col-md-6">
+                <div class="input-group">
+                    <span class="input-group-text bg-primary text-white">
+                        <i class="bi bi-search"></i>
+                    </span>
+                    <input 
+                        type="text" 
+                        name="q" 
+                        class="form-control" 
+                        placeholder="Search employee by name..."
+                        value="{{ request.GET.q }}"
+                    >
+                </div>
+            </div>
+            <div class="col-md-2">
+                <button type="submit" class="btn btn-success w-100">
+                    <i class="bi bi-search"></i> Search
+                </button>
+            </div>
+            {% if request.GET.q %}
+                <div class="col-md-2">
+                    <a href="{% url 'employee_list' %}" class="btn btn-secondary w-100">
+                        <i class="bi bi-x-circle"></i> Clear
+                    </a>
+                </div>
+            {% endif %}
+        </form>
+    </div>
+</div>
 
-    {% for employee in employees %}
-    <tr>
-        <td>{{ employee.name }}</td>
-        <td>{{ employee.email }}</td>
-        <td>{{ employee.phone }}</td>
-        <td>{{ employee.salary }}</td>
-        <td>{{ employee.department }}</td>
-        <td>
-            <a href="{% url 'update_employee' employee.id %}" class="btn btn-warning btn-sm">
-                Edit
-            </a>
+<!-- Employee Table -->
+{% if employees %}
+    <div class="table-responsive">
+        <table class="table table-hover align-middle">
+            <thead>
+                <tr>
+                    <th><i class="bi bi-person"></i> Name</th>
+                    <th><i class="bi bi-envelope"></i> Email</th>
+                    <th><i class="bi bi-telephone"></i> Phone</th>
+                    <th><i class="bi bi-cash-coin"></i> Salary</th>
+                    <th><i class="bi bi-building"></i> Department</th>
+                    <th class="text-center"><i class="bi bi-gear"></i> Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for employee in employees %}
+                    <tr>
+                        <td>
+                            <span class="badge bg-primary">{{ employee.name }}</span>
+                        </td>
+                        <td>
+                            <a href="mailto:{{ employee.email }}" class="text-decoration-none">
+                                {{ employee.email }}
+                            </a>
+                        </td>
+                        <td>
+                            <a href="tel:{{ employee.phone }}" class="text-decoration-none">
+                                {{ employee.phone }}
+                            </a>
+                        </td>
+                        <td>
+                            <span class="badge bg-success">
+                                {{ employee.salary|floatformat:2 }}
+                            </span>
+                        </td>
+                        <td>
+                            <span class="badge bg-info">{{ employee.department.name }}</span>
+                        </td>
+                        <td class="text-center">
+                            <a href="{% url 'update_employee' employee.id %}" class="btn btn-warning btn-sm" title="Edit Employee">
+                                <i class="bi bi-pencil-square"></i> Edit
+                            </a>
+                            <a href="{% url 'delete_employee' employee.id %}" class="btn btn-danger btn-sm" title="Delete Employee">
+                                <i class="bi bi-trash"></i> Delete
+                            </a>
+                        </td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
 
-            <a href="{% url 'delete_employee' employee.id %}" class="btn btn-danger btn-sm">
-                Delete
-            </a>
-        </td>
-    </tr>
-    {% endfor %}
-</table>
+    <div class="alert alert-success" role="alert">
+        <i class="bi bi-info-circle"></i> 
+        Total Employees: <strong>{{ employees|length }}</strong>
+    </div>
+
+{% else %}
+    <div class="alert alert-warning" role="alert">
+        <i class="bi bi-exclamation-triangle"></i> 
+        <strong>No employees found!</strong> 
+        {% if request.GET.q %}
+            Try a different search term.
+        {% else %}
+            <a href="{% url 'add_employee' %}">Add the first employee</a> to get started.
+        {% endif %}
+    </div>
+{% endif %}
 
 {% endblock %}

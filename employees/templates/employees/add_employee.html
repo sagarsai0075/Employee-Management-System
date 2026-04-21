@@ -1,15 +1,78 @@
 {% extends 'employees/base.html' %}
 
+{% block title %}Add Employee - Employee Management System{% endblock %}
+
 {% block content %}
 
-<h2>Add Employee</h2>
+<div class="row">
+    <div class="col-lg-8 mx-auto">
+        <h2 class="page-title">
+            <i class="bi bi-person-plus-fill"></i> Add New Employee
+        </h2>
 
-<form method="POST" class="card p-4 shadow">
-    {% csrf_token %}
-    {{ form.as_p }}
-    <button type="submit" class="btn btn-success">
-        Save Employee
-    </button>
-</form>
+        <div class="card">
+            <div class="card-body p-4">
+                <form method="POST" novalidate>
+                    {% csrf_token %}
+                    
+                    {% for field in form %}
+                        {% if field.name != 'id' %}
+                            <div class="mb-3">
+                                <label for="{{ field.id_for_label }}" class="form-label">
+                                    {{ field.label }}
+                                    {% if field.field.required %}
+                                        <span class="text-danger">*</span>
+                                    {% endif %}
+                                </label>
+                                
+                                {% if field.errors %}
+                                    <div class="has-validation">
+                                        {{ field }}
+                                        <div class="invalid-feedback d-block">
+                                            {% for error in field.errors %}
+                                                <i class="bi bi-exclamation-circle"></i> {{ error }}<br>
+                                            {% endfor %}
+                                        </div>
+                                    </div>
+                                {% else %}
+                                    {{ field }}
+                                {% endif %}
+                                
+                                {% if field.help_text %}
+                                    <small class="form-text text-muted d-block mt-1">
+                                        {{ field.help_text|safe }}
+                                    </small>
+                                {% endif %}
+                            </div>
+                        {% endif %}
+                    {% endfor %}
+
+                    {% if form.non_field_errors %}
+                        <div class="alert alert-danger" role="alert">
+                            <i class="bi bi-exclamation-triangle"></i> 
+                            <strong>Error!</strong>
+                            {% for error in form.non_field_errors %}
+                                <div>{{ error }}</div>
+                            {% endfor %}
+                        </div>
+                    {% endif %}
+
+                    <div class="d-flex gap-2 mt-4">
+                        <button type="submit" class="btn btn-primary btn-lg">
+                            <i class="bi bi-check-circle"></i> Save Employee
+                        </button>
+                        <a href="{% url 'employee_list' %}" class="btn btn-secondary btn-lg">
+                            <i class="bi bi-arrow-left"></i> Cancel
+                        </a>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+        <div class="alert alert-info mt-4" role="alert">
+            <i class="bi bi-info-circle"></i> <strong>Note:</strong> All fields marked with <span class="text-danger">*</span> are required.
+        </div>
+    </div>
+</div>
 
 {% endblock %}
