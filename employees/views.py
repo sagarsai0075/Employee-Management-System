@@ -4,9 +4,16 @@ from .forms import EmployeeForm
 
 
 def employee_list(request):
-    employees = Employee.objects.all()
-    return render(request, 'employees/employee_list.html', {'employees': employees})
+    query = request.GET.get('q')
 
+    if query:
+        employees = Employee.objects.filter(name__icontains=query)
+    else:
+        employees = Employee.objects.all()
+
+    return render(request, 'employees/employee_list.html', {
+        'employees': employees
+    })
 
 def add_employee(request):
     if request.method == 'POST':

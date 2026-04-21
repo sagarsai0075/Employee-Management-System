@@ -2,11 +2,32 @@
 
 {% block content %}
 
-<a href="{% url 'add_employee' %}">Add Employee</a>
+<a href="{% url 'add_employee' %}" class="btn btn-primary mb-3">
+    Add Employee
+</a>
 
 <h2>Employee List</h2>
 
-<table border="1">
+<form method="GET" class="mb-3">
+    <div class="row">
+        <div class="col-md-6">
+            <input
+                type="text"
+                name="q"
+                class="form-control"
+                placeholder="Search employee by name"
+            >
+        </div>
+
+        <div class="col-md-2">
+            <button type="submit" class="btn btn-success">
+                Search
+            </button>
+        </div>
+    </div>
+</form>
+
+<table class="table table-bordered table-striped">
     <tr>
         <th>Name</th>
         <th>Email</th>
@@ -24,8 +45,13 @@
         <td>{{ employee.salary }}</td>
         <td>{{ employee.department }}</td>
         <td>
-            <a href="{% url 'update_employee' employee.id %}">Edit</a>
-            <a href="{% url 'delete_employee' employee.id %}">Delete</a>
+            <a href="{% url 'update_employee' employee.id %}" class="btn btn-warning btn-sm">
+                Edit
+            </a>
+
+            <a href="{% url 'delete_employee' employee.id %}" class="btn btn-danger btn-sm">
+                Delete
+            </a>
         </td>
     </tr>
     {% endfor %}
