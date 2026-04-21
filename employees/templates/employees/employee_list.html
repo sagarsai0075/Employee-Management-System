@@ -1,0 +1,34 @@
+{% extends 'employees/base.html' %}
+
+{% block content %}
+
+<a href="{% url 'add_employee' %}">Add Employee</a>
+
+<h2>Employee List</h2>
+
+<table border="1">
+    <tr>
+        <th>Name</th>
+        <th>Email</th>
+        <th>Phone</th>
+        <th>Salary</th>
+        <th>Department</th>
+        <th>Actions</th>
+    </tr>
+
+    {% for employee in employees %}
+    <tr>
+        <td>{{ employee.name }}</td>
+        <td>{{ employee.email }}</td>
+        <td>{{ employee.phone }}</td>
+        <td>{{ employee.salary }}</td>
+        <td>{{ employee.department }}</td>
+        <td>
+            <a href="{% url 'update_employee' employee.id %}">Edit</a>
+            <a href="{% url 'delete_employee' employee.id %}">Delete</a>
+        </td>
+    </tr>
+    {% endfor %}
+</table>
+
+{% endblock %}
